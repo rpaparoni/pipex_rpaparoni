@@ -6,7 +6,7 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 11:03:26 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/02/17 12:21:40 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/02/17 17:59:33 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 # define PIPEX_H
 
+#include "../libft/libft.h"
+
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <fcntl.h>
 
-int main(int argc, char *argv[]);
+int main();
 
 #endif

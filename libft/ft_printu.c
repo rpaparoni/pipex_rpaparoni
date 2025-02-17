@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_printu.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 16:10:28 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/02/17 12:20:17 by rpaparon         ###   ########.fr       */
+/*   Created: 2024/11/05 14:55:05 by rpaparon          #+#    #+#             */
+/*   Updated: 2025/02/17 16:41:34 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/pipex.h"
+#include "libft.h"
 
-int main(int argc, char *argv[] )
+void	ft_printu(unsigned int value, int *counter)
 {
-    (void)argc;
-    (void)argv;
-    return (0);
+	if (value >= 10)
+		ft_printu(value / 10, counter);
+	ft_putchar_fd(value % 10 + '0', 1);
+	(*counter)++;
 }

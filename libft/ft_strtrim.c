@@ -6,7 +6,7 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 14:18:28 by rpaparon          #+#    #+#             */
-/*   Updated: 2024/10/28 19:16:09 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/02/17 14:20:16 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,3 @@ char	*ft_strtrim(const char *s1, const char *set)
 		end--;
 	return (ft_substr(s1, start, end - start));
 }
-

@@ -6,7 +6,7 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 14:15:29 by rpaparon          #+#    #+#             */
-/*   Updated: 2024/10/28 19:14:50 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/02/17 14:19:34 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,3 @@ void	ft_putnbr_fd(int n, int fd)
 		ft_putchar_fd (n + '0', fd);
 	}
 }
-

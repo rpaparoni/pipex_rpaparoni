@@ -6,7 +6,7 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 12:01:28 by rpaparon          #+#    #+#             */
-/*   Updated: 2024/10/28 19:14:30 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/02/17 14:22:31 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,3 @@ void	*ft_memmove(void *dst, const void *src, size_t n)
 	copy (char_dest, char_src, n);
 	return (dst);
 }
-

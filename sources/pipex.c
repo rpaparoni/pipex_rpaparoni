@@ -6,8 +6,13 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:10:34 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/02/17 12:20:31 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/02/17 18:05:36 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/pipex.h"
+
+int main() {
+    ft_printf("Hello, world!\n");
+    return 0;
+}
