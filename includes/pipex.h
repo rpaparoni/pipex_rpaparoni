@@ -6,7 +6,7 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 11:03:26 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/02/17 11:07:10 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:21:40 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@
 # include <stdio.h>
 # include <fcntl.h>
 
-int main(int argc, char **argv);
+int main(int argc, char *argv[]);
 
 #endif
