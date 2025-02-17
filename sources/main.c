@@ -6,11 +6,11 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:10:28 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/02/17 11:16:24 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:20:17 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "includes/pipex.h"
 
 int main(int argc, char *argv[] )
 {
