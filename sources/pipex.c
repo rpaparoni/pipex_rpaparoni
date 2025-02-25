@@ -6,11 +6,16 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:10:34 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/02/18 21:09:44 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/02/25 16:57:25 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/pipex.h"
+
+char **ft_split(char *str, char c); // Asegúrate de incluir la implementación correcta
+void ft_free(char **arr);
+char *find_path(char *cmd, char **envp);
+void ft_execpipe(int argc, char *argv[], char **envp);
 
 int main(int argc, char *argv[]) {
     
