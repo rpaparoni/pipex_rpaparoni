@@ -6,11 +6,18 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:10:28 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/02/27 19:04:36 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/02/27 19:57:40 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
+
+void error(int in_fd, int out_fd)
+{
+	perror("Error");
+	close_files(in_fd, out_fd);
+	exit(EXIT_FAILURE);
+}
 
 void	close_files(int in_fd, int out_fd)
 {

@@ -6,7 +6,7 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:10:34 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/02/27 19:48:23 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/02/27 19:58:29 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ void	ft_execpipe(int in_fd, int out_fd, char *argv[], char **envp)
     
 	if (pipe(pipe_fd) < 0)
 	{
-	    perror("Error creating pipe");
-	    close_files(in_fd, out_fd);
-	    exit(EXIT_FAILURE);
+	    
 	}
 	pid = fork();
 	if (pid == 0)
@@ -47,12 +45,8 @@ void	ft_execpipe(int in_fd, int out_fd, char *argv[], char **envp)
 	    parent_process(pipe_fd, out_fd, cmd2, envp);
 	}
 	else
-	{
-	    perror("Error forking process");
-	    close_files(in_fd, out_fd);
-	    exit(EXIT_FAILURE);
-	}
-    }
+		error(in_fd, out_fd);
+}
     
 
 int	main(int argc, char *argv[], char **envp)
