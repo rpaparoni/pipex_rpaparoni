@@ -6,27 +6,54 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:10:34 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/02/27 19:02:50 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/02/27 19:48:23 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/pipex.h"
 
+
+void	child_process(in_fd,)
+{
+	
+}
+void	parent_process()
+{
+	
+}
+
 void	ft_execpipe(int in_fd, int out_fd, char *argv[], char **envp)
 {
-	char	**cmd1;
-	char	**cmd2;
-	pid_t	pid;
-	int		pipe_fd[2];
-
+	char    **cmd1;
+	char    **cmd2;
+	pid_t   pid;
+	int     pipe_fd[2];
+    
 	if (pipe(pipe_fd) < 0)
 	{
-		perror("Error creating pipe");
-		close_files(in_fd, out_fd);
-		exit(EXIT_FAILURE);
+	    perror("Error creating pipe");
+	    close_files(in_fd, out_fd);
+	    exit(EXIT_FAILURE);
 	}
 	pid = fork();
-}
+	if (pid == 0)
+	{
+	    cmd1 = ft_split(argv[2], ' ');
+	    child_process(in_fd, pipe_fd, cmd1, envp);
+	}
+	else if (pid > 0)
+	{
+	    cmd2 = ft_split(argv[3], ' ');
+	    parent_process(pipe_fd, out_fd, cmd2, envp);
+	}
+	else
+	{
+	    perror("Error forking process");
+	    close_files(in_fd, out_fd);
+	    exit(EXIT_FAILURE);
+	}
+    }
+    
 
 int	main(int argc, char *argv[], char **envp)
 {
