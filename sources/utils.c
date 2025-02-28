@@ -6,46 +6,39 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:10:28 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/02/27 23:45:26 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:16:57 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-static char	**get_paths_from_env(char **envp)
-{
-	int	i;
-
-	i = 0;
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			return (ft_split(envp[i] + 5, ':'));
-		i++;
-	}
-	return (NULL);
-}
-
 char	*find_path(char *cmd, char **envp)
 {
-	int		i;
-	char	*full_cmd;
 	char	**paths;
+	char	*path;
+	int		i;
+	char	*part_path;
 
-	if (!cmd || !envp)
-		return (NULL);
-	paths = get_paths_from_env(envp);
-	if (!paths)
-		return (NULL);
+	i = 0;
+	while (ft_strnstr(envp[i], "PATH", 4) == 0)
+		i++;
+	paths = ft_split(envp[i] + 5, ':');
+	i = 0;
+	while (paths[i])
+	{
+		part_path = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(part_path, cmd);
+		free(part_path);
+		if (access(path, F_OK) == 0)
+			return (path);
+		free(path);
+		i++;
+	}
 	i = -1;
 	while (paths[++i])
-	{
-		full_cmd = ft_strjoin3(paths[i], "/", cmd);
-		if (access(full_cmd, X_OK) == 0)
-			return (ft_free_strarr(paths), full_cmd);
-		free(full_cmd);
-	}
-	return (ft_free_strarr(paths), NULL);
+		free(paths[i]);
+	free(paths);
+	return (0);
 }
 
 void	error(char *msg, int *fd1, int *fd2)
@@ -65,7 +58,7 @@ void	close_files(int *in_fd, int *out_fd)
 }
 
 void	open_files(char *infile, char *outfile, int *in_fd, int *out_fd)
-{	
+{
 	*in_fd = open(infile, O_RDONLY);
 	if (*in_fd < 0)
 	{
