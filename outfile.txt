@@ -1,7 +1,7 @@
-sources
-pipex
-outfile.txt
-Makefile
-libft
-infile.txt
 includes
+infile.txt
+libft
+Makefile
+outfile.txt
+pipex
+sources

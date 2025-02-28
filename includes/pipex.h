@@ -6,7 +6,7 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 11:03:26 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/02/28 14:26:35 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:42:57 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
+# include <stdio.h>
 
 int		main(int argc, char *argv[], char **envp);
 void	ft_execpipe(int in_fd, int out_fd, char *argv[], char **envp);
