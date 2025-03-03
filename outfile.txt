@@ -1,7 +1,1 @@
-includes
-infile.txt
-libft
-Makefile
-outfile.txt
-pipex
-sources
+21

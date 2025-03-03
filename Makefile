@@ -6,17 +6,21 @@
 #    By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 12:36:51 by rpaparon          #+#    #+#              #
-#    Updated: 2025/02/18 15:47:38 by rpaparon         ###   ########.fr        #
+#    Updated: 2025/03/03 12:34:27 by rpaparon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
+NAME_BONUS = pipex_bonus
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 SOURCES = sources/utils.c sources/pipex.c
 OBJECTS = $(SOURCES:.c=.o)
+
+SOURCES_BONUS = sources/utils_bonus.c sources/pipex_bonus.c
+OBJECTS_BONUS = $(SOURCES_BONUS:.c=.o)
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -36,10 +40,17 @@ PURPLE = \033[1;35m
 
 all: banner $(NAME)
 
+bonus: banner $(NAME_BONUS)
+
 $(NAME): $(OBJECTS) $(LIBFT)
 	@echo "$(CYAN)Linking $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) -o $(NAME)
 	@echo "$(GREEN)✔ $(NAME) compiled successfully!$(RESET)"
+
+$(NAME_BONUS): $(OBJECTS_BONUS) $(LIBFT)
+	@echo "$(CYAN)Linking $(NAME_BONUS)...$(RESET)"
+	@$(CC) $(CFLAGS) $(OBJECTS_BONUS) $(LIBFT) -o $(NAME_BONUS)
+	@echo "$(GREEN)✔ $(NAME_BONUS) compiled successfully!$(RESET)"
 
 %.o: %.c
 	@echo "$(YELLOW)Compiling $<...$(RESET)"
@@ -51,12 +62,12 @@ $(LIBFT):
 
 clean:
 	@echo "$(RED)Cleaning object files...$(RESET)"
-	@$(RM) $(OBJECTS)
+	@$(RM) $(OBJECTS) $(OBJECTS_BONUS)
 	@$(MAKE) -C $(LIBFT_DIR) clean --silent
 
 fclean: clean
 	@echo "$(RED)Removing $(NAME)...$(RESET)"
-	@$(RM) $(NAME)
+	@$(RM) $(NAME) $(NAME_BONUS)
 	@$(MAKE) -C $(LIBFT_DIR) fclean --silent
 
 re: fclean all
