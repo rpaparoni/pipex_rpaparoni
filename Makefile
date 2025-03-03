@@ -6,7 +6,7 @@
 #    By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/17 12:36:51 by rpaparon          #+#    #+#              #
-#    Updated: 2025/03/03 12:34:27 by rpaparon         ###   ########.fr        #
+#    Updated: 2025/03/03 19:41:38 by rpaparon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 SOURCES = sources/utils.c sources/pipex.c
 OBJECTS = $(SOURCES:.c=.o)
 
-SOURCES_BONUS = sources/utils_bonus.c sources/pipex_bonus.c
+SOURCES_BONUS = sources/utils.c sources/pipex_bonus.c
 OBJECTS_BONUS = $(SOURCES_BONUS:.c=.o)
 
 CC = cc

@@ -1,5 +1,4 @@
 NAME = libft.a
-
 SOURCES = ft_atoi.c ft_bzero.c ft_isalnum.c \
           ft_isalpha.c ft_isascii.c ft_isdigit.c \
           ft_isprint.c ft_memcpy.c ft_memchr.c \
@@ -15,6 +14,7 @@ SOURCES = ft_atoi.c ft_bzero.c ft_isalnum.c \
 		  ft_substr.c \
           ft_printf.c ft_printhex.c ft_printid.c\
           ft_printu.c ft_printp.c \
+          get_next_line.c
 
 OBJECTS = $(SOURCES:.c=.o)
 
