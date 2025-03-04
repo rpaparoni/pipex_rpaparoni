@@ -1,5 +1,9 @@
 # Pipex
 
+<p align="center">
+    <img src="https://github.com/rpaparoni/imgs/raw/main/Captura%20desde%202025-03-04%2014-54-36.png" alt="Descripción de la imagen" />
+</p>
+
 ## Descripción
 
 Pipex es un proyecto de la escuela 42 que busca replicar el comportamiento de la tubería (pipeline) en Unix, permitiendo la comunicación entre procesos a través de `pipe()`, `dup2()` y `execve()`.
