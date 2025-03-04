@@ -1,7 +1,7 @@
 # Pipex
 
 <p align="center">
-    <img src="https://github.com/rpaparoni/imgs/raw/main/Captura%20desde%202025-03-04%2014-54-36.png" alt="Descripción de la imagen" />
+    <img src="https://github.com/rpaparoni/imgs/blob/main/Captura%20desde%202025-03-04%2014-55-25.png" alt="Descripción de la imagen" />
 </p>
 
 ## Descripción
