@@ -1,91 +1,93 @@
 # Pipex
 
+[Spanish version 🇪🇸](README_es.md)
+
 <p align="center">
-    <img src="https://github.com/rpaparoni/imgs/blob/main/Captura%20desde%202025-03-04%2014-55-25.png" alt="Descripción de la imagen" />
+    <img src="https://github.com/rpaparoni/imgs/blob/main/Captura%20desde%202025-03-04%2014-55-25.png" alt="Image description" />
 </p>
 
-## Descripción
+## Description
 
-Pipex es un proyecto de la escuela 42 que busca replicar el comportamiento de la tubería (pipeline) en Unix, permitiendo la comunicación entre procesos a través de `pipe()`, `dup2()` y `execve()`.
+Pipex is a project from 42 school that aims to replicate the behavior of the pipeline in Unix, allowing communication between processes through `pipe()`, `dup2()`, and `execve()`.
 
-El objetivo es ejecutar comandos en una cadena como:
+The goal is to execute commands in a chain like:
 
 ```bash
 < infile cmd1 | cmd2 > outfile
 ```
 
-Esto significa que la salida de `cmd1` se convierte en la entrada de `cmd2`, y el resultado final se guarda en `outfile`.
+This means that the output of `cmd1` becomes the input of `cmd2`, and the final result is saved in `outfile`.
 
-## Instalación y Uso
+## Installation and Usage
 
-### Compilación
+### Compilation
 
-Para compilar el proyecto, simplemente ejecuta:
+To compile the project, simply run:
 
 ```bash
 make
 ```
 
-Esto generará el ejecutable `pipex`.
+This will generate the `pipex` executable.
 
-Para compilar el bonus (soporte para `here_doc` y múltiples pipes):
+To compile the bonus (support for `here_doc` and multiple pipes):
 
 ```bash
 make bonus
 ```
 
-### Uso
+### Usage
 
-Para ejecutar el programa:
+To run the program:
 
 ```bash
-./pipex infile "comando1" "comando2" outfile
+./pipex infile "command1" "command2" outfile
 ```
 
-Ejemplo:
+Example:
 
 ```bash
 ./pipex input.txt "cat -e" "wc -l" output.txt
 ```
 
-Esto tomará `input.txt`, ejecutará `cat -e`, luego pasará su salida a `wc -l` y finalmente guardará el resultado en `output.txt`.
+This will take `input.txt`, execute `cat -e`, then pass its output to `wc -l`, and finally save the result in `output.txt`.
 
-#### Bonus (Soporte para here\_doc)
+#### Bonus (Support for here\_doc)
 
-Si quieres utilizar `here_doc` para simular una entrada estándar interactiva:
+If you want to use `here_doc` to simulate an interactive standard input:
 
 ```bash
-./pipex here_doc LIMITER "comando1" "comando2" output.txt
+./pipex here_doc LIMITER "command1" "command2" output.txt
 ```
 
-Ejemplo:
+Example:
 
 ```bash
 ./pipex here_doc END "cat" "wc -l" output.txt
 ```
 
-Aquí, el programa leerá la entrada estándar hasta encontrar la palabra `END`, luego procesará los comandos y guardará la salida en `output.txt`.
+Here, the program will read the standard input until it finds the word `END`, then process the commands and save the output in `output.txt`.
 
-## Funciones Utilizadas
+## Functions Used
 
-El programa utiliza funciones clave de Unix como:
+The program uses key Unix functions such as:
 
-- `pipe()` - Crea un canal de comunicación entre procesos.
-- `fork()` - Crea procesos hijo para ejecutar comandos.
-- `dup2()` - Redirige la entrada/salida estándar.
-- `execve()` - Ejecuta comandos en un entorno nuevo.
-- `waitpid()` - Espera la terminación de procesos hijo.
+- `pipe()` - Creates a communication channel between processes.
+- `fork()` - Creates child processes to execute commands.
+- `dup2()` - Redirects standard input/output.
+- `execve()` - Executes commands in a new environment.
+- `waitpid()` - Waits for child processes to terminate.
 
-## Errores y Manejo de Excepciones
+## Errors and Exception Handling
 
-El programa maneja errores comunes como:
+The program handles common errors such as:
 
-- Archivo de entrada inexistente.
-- Comando no encontrado o incorrecto.
-- Permisos insuficientes para abrir archivos.
-- Fallos en `pipe()`, `fork()`, o `execve()`.
+- Non-existent input file.
+- Command not found or incorrect.
+- Insufficient permissions to open files.
+- Failures in `pipe()`, `fork()`, or `execve()`.
 
-Si algo falla, se imprimirá un mensaje de error con una funcion especifica.
+If something fails, an error message will be printed with a specific function.
 
 ##
 

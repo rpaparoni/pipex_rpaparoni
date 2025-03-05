@@ -6,7 +6,7 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 11:03:26 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/03/03 19:37:49 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/03/03 20:36:40 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ char	*find_path(char *cmd, char **envp);
 
 //bonus
 void	execute_command(char *cmd, char **envp, int infile, int outfile);
+void	child_pipe_process(char *argv, char **envp);
 
 #endif

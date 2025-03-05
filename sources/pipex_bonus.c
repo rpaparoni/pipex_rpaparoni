@@ -6,123 +6,121 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 12:15:23 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/03/03 19:49:17 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:41:59 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-void execute_command(char *cmd, char **envp, int infile, int outfile)
+int	open_file(char *argv, int i)
 {
-    char	**cmd_args;
-    char	*path_cmd;
+	int	file;
 
-    cmd_args = ft_split(cmd, ' ');
-    path_cmd = find_path(cmd_args[0], envp);
-    if (!path_cmd)
-        error("Command not found", &infile, &outfile);
-
-    if (fork() == 0) // Crear un proceso hijo para ejecutar el comando
-    {
-        dup2(infile, STDIN_FILENO);
-        dup2(outfile, STDOUT_FILENO);
-        close(infile);
-        close(outfile);
-        execve(path_cmd, cmd_args, envp);
-        error("Error executing command", NULL, NULL); // Si llega aquí, execve falló
-    }
-    free(path_cmd);
-    free(cmd_args); // Liberar memoria
+	file = 0;
+	if (i == 0)
+		file = open(argv, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	else if (i == 1)
+		file = open(argv, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	else if (i == 2)
+		file = open(argv, O_RDONLY, 0777);
+	if (file == -1)
+		error("error opening file", NULL, NULL);
+	return (file);
 }
 
-void here_doc(char *limiter)
+void	child_pipe_process(char *argv, char **envp)
 {
-    int		fd[2];
-    char	*line;
+	pid_t	pid;
+	int		fd[2];
 
-    if (pipe(fd) == -1)
-        error("Pipe failed", NULL, NULL);
-
-    while (1)
-    {
-        ft_putstr_fd("here_doc> ", STDOUT_FILENO);
-        line = get_next_line(STDIN_FILENO);
-        if (!line) // 🔴 Si llega EOF, salimos
-            break;
-        if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0 && line[ft_strlen(limiter)] == '\n')
-        {
-            free(line);
-            break;
-        }
-        ft_putstr_fd(line, fd[1]);
-        free(line);
-    }
-    close(fd[1]); // 🔴 IMPORTANTE: Cerrar escritura antes de duplicar
-    dup2(fd[0], STDIN_FILENO);
-    close(fd[0]); // 🔴 Cerrar lectura después de duplicar
+	if (pipe(fd) == -1)
+		error("error making pipe", NULL, NULL);
+	pid = fork();
+	if (pid == -1)
+		error("error making pipe", NULL, NULL);
+	if (pid == 0)
+	{
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		execute(argv, envp);
+	}
+	else
+	{
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		waitpid(pid, NULL, 0);
+	}
 }
 
+/* Function who make a child process that will read from the stdin with
+ get_next_line until it find the limiter word and then put the output inside a
+ pipe. The main process will change his stdin for the pipe file descriptor. */
+ void	here_doc(char *limiter, int argc)
+ {
+	 pid_t	reader;
+	 int		fd[2];
+	 char	*line;
+ 
+	 if (argc < 6)
+		 usage();
+	 if (pipe(fd) == -1)
+		 error("error making pipe", NULL, NULL);
+	 reader = fork();
+	 if (reader == -1)
+		 error("error forking process", NULL, NULL);
+	 if (reader == 0) // Proceso hijo (lee entrada)
+	 {
+		 close(fd[0]); // Cierra lectura del pipe
+		 while ((line = get_next_line(STDIN_FILENO)))
+		 {
+			 if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0 && line[ft_strlen(limiter)] == '\n')
+			 {
+				 free(line);
+				 exit(EXIT_SUCCESS);
+			 }
+			 write(fd[1], line, ft_strlen(line));
+			 free(line);
+		 }
+		 exit(EXIT_SUCCESS);
+	 }
+	 else // Proceso padre
+	 {
+		 close(fd[1]); // Cierra escritura del pipe
+		 dup2(fd[0], STDIN_FILENO);
+		 close(fd[0]); // Cierra lectura después de duplicar
+		 wait(NULL);
+	 }
+ }
 
-void exec_more_pipes(int argc, char *argv[], char **envp, int infile, int outfile)
+/* Main function that run the childs process with the right file descriptor
+ or display an error message if arguments are wrong. It will run here_doc
+ function if the "here_doc" string is find in argv[1] */
+int	main(int argc, char **argv, char **envp)
 {
-    int	i;
-    int	pipe_fd[2];
-    int	prev_pipe = infile;
+	int	i;
+	int	filein;
+	int	fileout;
 
-    i = 2;
-    while (i < argc - 2)
-    {
-        if (pipe(pipe_fd) == -1)
-            error("Pipe failed", &prev_pipe, NULL);
-
-        if (fork() == 0) // Crear un proceso hijo para cada comando
-        {
-            close(pipe_fd[0]); // Cerrar el extremo de lectura del pipe
-            dup2(prev_pipe, STDIN_FILENO);
-            dup2(pipe_fd[1], STDOUT_FILENO);
-            close(prev_pipe);
-            close(pipe_fd[1]);
-            execute_command(argv[i], envp, STDIN_FILENO, STDOUT_FILENO);
-        }
-	close(prev_pipe);
-        close(pipe_fd[1]);
-        prev_pipe = pipe_fd[0]; // El siguiente comando leerá de este pipe
-        i++;
-    }
-    dup2(prev_pipe, STDIN_FILENO);
-    dup2(outfile, STDOUT_FILENO);
-    close(prev_pipe);
-    execute_command(argv[i], envp, STDIN_FILENO, outfile);
-}
-
-int	main(int argc, char *argv[], char **envp)
-{
-    int	infile;
-    int	outfile;
-
-    if (argc >= 5)
-    {
-        if (ft_strncmp(argv[1], "here_doc", 8) == 0)
-        {
-            outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-            if (outfile < 0)
-                error("Error opening output file", NULL, NULL);
-            here_doc(argv[2]);
-        }
-        else
-        {
-            infile = open(argv[1], O_RDONLY);
-            if (infile < 0)
-                error("Error opening input file", NULL, NULL);
-            outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-            if (outfile < 0)
-                error("Error opening output file", &infile, NULL);
-            dup2(infile, STDIN_FILENO);
-        }
-        exec_more_pipes(argc, argv, envp, STDIN_FILENO, outfile);
-    }
-    else
-        error("Usage: ./pipex file1 cmd1 cmd2 ... file2", NULL, NULL);
-    return (0);
+	if (argc >= 5)
+	{
+		if (ft_strncmp(argv[1], "here_doc", 8) == 0)
+		{
+			i = 3;
+			fileout = open_file(argv[argc - 1], 0);
+			here_doc(argv[2], argc);
+		}
+		else
+		{
+			i = 2;
+			fileout = open_file(argv[argc - 1], 1);
+			filein = open_file(argv[1], 2);
+			dup2(filein, STDIN_FILENO);
+		}
+		while (i < argc - 2)
+			child_pipe_process(argv[i++], envp);
+		dup2(fileout, STDOUT_FILENO);
+		execute(argv[argc - 2], envp);
+	}
+    ft_printf("Usage: %s infile cmd1 cmd2 outfile\n", argv[0]);
 }
 
