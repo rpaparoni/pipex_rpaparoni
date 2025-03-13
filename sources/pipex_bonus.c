@@ -6,7 +6,7 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 12:15:23 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/03/08 20:38:40 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:58:01 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	open_file(char *argv, int i)
 	else if (i == 2)
 		file = open(argv, O_RDONLY, 0777);
 	if (file == -1)
-		error("error opening file", NULL, NULL);
+		ft_error("error opening file", NULL, NULL);
 	return (file);
 }
 
@@ -34,10 +34,10 @@ void	child_pipe_process(char *argv, char **envp)
 	int		fd[2];
 
 	if (pipe(fd) == -1)
-		error("error making pipe", NULL, NULL);
+		ft_error("error making pipe", NULL, NULL);
 	pid = fork();
 	if (pid == -1)
-		error("error making pipe", NULL, NULL);
+		ft_error("error making pipe", NULL, NULL);
 	if (pid == 0)
 	{
 		close(fd[0]);

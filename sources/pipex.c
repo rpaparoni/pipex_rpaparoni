@@ -6,7 +6,7 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:10:34 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/02/28 14:25:08 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:01:16 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_execpipe(int in_fd, int out_fd, char *argv[], char **envp)
 
 	if (pipe(pipe_fd) < 0)
 	{
-		error("Error creating pipe", &in_fd, &out_fd);
+		ft_error("Error creating pipe", &in_fd, &out_fd);
 	}
 	pid = fork();
 	if (pid == 0)
@@ -36,7 +36,7 @@ void	ft_execpipe(int in_fd, int out_fd, char *argv[], char **envp)
 	}
 	else
 	{
-		error("Error forking process", &in_fd, &out_fd);
+		ft_error("Error forking process", &in_fd, &out_fd);
 	}
 }
 
@@ -50,10 +50,10 @@ void	child_process(int in_fd, int pipe_fd[], char *cmd[], char **envp)
 	path_cmd = find_path(cmd[0], envp);
 	if (!path_cmd)
 	{
-		error(NULL, NULL, NULL);
+		ft_error("Error creating Path", NULL, NULL);
 	}
 	execve(path_cmd, cmd, envp);
-	error(NULL, NULL, NULL);
+	ft_error("Error executing command", NULL, NULL);
 }
 
 void	parent_process(int pipe_fd[], int out_fd, char *cmd[], char **envp)
@@ -66,10 +66,10 @@ void	parent_process(int pipe_fd[], int out_fd, char *cmd[], char **envp)
 	path_cmd = find_path(cmd[0], envp);
 	if (!path_cmd)
 	{
-		error(NULL, NULL, NULL);
+		ft_error("Error creating Path", NULL, NULL);
 	}
 	execve(path_cmd, cmd, envp);
-	error(NULL, NULL, NULL);
+	ft_error("Error executing command", NULL, NULL);
 }
 
 int	main(int argc, char *argv[], char **envp)
@@ -84,6 +84,6 @@ int	main(int argc, char *argv[], char **envp)
 	}
 	open_files(argv[1], argv[4], &in_fd, &out_fd);
 	ft_execpipe(in_fd, out_fd, argv, envp);
-	close_files(&in_fd, &out_fd);
+	ft_error(NULL, &in_fd, &out_fd);
 	return (EXIT_SUCCESS);
 }
