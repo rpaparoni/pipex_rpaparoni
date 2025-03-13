@@ -6,7 +6,7 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:10:28 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/03/13 15:01:32 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:07:56 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*find_path(char *cmd, char **envp)
 
 void	ft_error(char *msg, int *fd1, int *fd2)
 {
-	ft_printf(msg);
+	ft_printf("%s\n", msg);
 	if (fd1 && *fd1 >= 0)
 		close(*fd1);
 	if (fd2 && *fd2 >= 0)

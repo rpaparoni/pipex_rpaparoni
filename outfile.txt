@@ -1,8 +1,1 @@
-total 44
-drwxrwxr-x 2 rpaparon rpaparon  4096 feb 17 12:18 includes
--rw-rw-r-- 1 rpaparon rpaparon   845 feb 28 14:07 infile.txt
-drwxrwxr-x 2 rpaparon rpaparon  4096 mar  3 12:54 libft
--rw-rw-r-- 1 rpaparon rpaparon  3866 mar  3 12:34 Makefile
--rw-r--r-- 1 rpaparon rpaparon     0 mar  3 12:56 outfile.txt
--rwxrwxr-x 1 rpaparon rpaparon 22264 mar  3 12:54 pipex
-drwxrwxr-x 2 rpaparon rpaparon  4096 mar  3 12:54 sources
+22
