@@ -6,98 +6,99 @@
 /*   By: rpaparon <rpaparon@student.42madrid.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 16:10:34 by rpaparon          #+#    #+#             */
-/*   Updated: 2025/05/28 16:42:02 by rpaparon         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:24:02 by rpaparon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-void	ft_execpipe(int in_fd, int out_fd, char *argv[], char **envp)
+void	ft_execpipe(int *fd, char *argv[], char **envp)
 {
-	char	**cmd1;
-	char	**cmd2;
 	pid_t	pid;
-	int		pipe_fd[2];
+	pid_t	pid2;
 
-	if (pipe(pipe_fd) < 0)
-	{
-		ft_error("Error creating pipe", &in_fd, &out_fd);
-	}
 	pid = fork();
+	if (pid == -1)
+		ft_kill("Error Fork", fd);
 	if (pid == 0)
 	{
-		cmd1 = ft_split(argv[2], ' ');
-		child_process(in_fd, pipe_fd, cmd1, envp);
-		free_array(cmd1);
+		close(fd[0]);
+		first_child(argv, envp, fd);
 	}
-	else if (pid > 0)
+	pid2 = fork();
+	if (pid2 == -1)
+		ft_kill("Error Fork", fd);
+	if (pid2 == 0)
 	{
-		cmd2 = ft_split(argv[3], ' ');
-		parent_process(pipe_fd, out_fd, cmd2, envp);
-		free_array(cmd2);
+		close(fd[1]);
+		second_child(argv, envp, fd);
 	}
-	else
-		ft_error("Error forking process", &in_fd, &out_fd);
+	waitpid(pid, 0, 0);
+	waitpid(pid2, 0, 0);
 }
 
-void	child_process(int in_fd, int pipe_fd[], char *cmd[], char **envp)
+void	first_child(char **argv, char **envp, int *fd)
 {
-	char	*path_cmd;
+	int		file1_fd;
+	char	**cmd1;
 
-	dup2(in_fd, STDIN_FILENO);
-	dup2(pipe_fd[1], STDOUT_FILENO);
-	close(pipe_fd[0]);
-	path_cmd = find_path(cmd[0], envp);
-	if (!path_cmd)
-	{
-		ft_printf("%sError creating Path hijo");
-		free_array(cmd);
-		exit(1);
-	}
-	if (execve(path_cmd, cmd, envp) == -1)
-	{
-		ft_error("command not found", NULL, NULL);
-		free(path_cmd);
-		free_array(cmd);
-		exit(EXIT_FAILURE);
-	}
+	file1_fd = open(argv[1], O_RDONLY);
+	if (file1_fd == -1)
+		ft_error("./pipex");
+	dup2(file1_fd, STDIN_FILENO);
+	dup2(fd[1], STDOUT_FILENO);
+	close(file1_fd);
+	close(fd[0]);
+	close(fd[1]);
+	cmd1 = ft_split(argv[2], ' ');
+	if (!cmd1 || !cmd1[0])
+		ft_error("Error command");
+	ft_cmd(envp, cmd1);
+	free_array(cmd1);
 }
 
-void	parent_process(int pipe_fd[], int out_fd, char *cmd[], char **envp)
+void	second_child(char **argv, char **envp, int *fd)
 {
-	char	*path_cmd;
+	int		file2_fd;
+	char	**cmd2;
 
-	dup2(pipe_fd[0], STDIN_FILENO);
-	dup2(out_fd, STDOUT_FILENO);
-	close(pipe_fd[1]);
-	path_cmd = find_path(cmd[0], envp);
-	if (!path_cmd)
-	{
-		ft_error("Error creating Path padre", NULL, NULL);
-		free_array(cmd);
-		exit(1);
-	}
-	if (execve(path_cmd, cmd, envp) == -1)
-	{
-		ft_error("command not found", NULL, NULL);
-		free(path_cmd);
-		free_array(cmd);
-		exit(EXIT_FAILURE);;
-	}
+	file2_fd = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (file2_fd == -1)
+		ft_error("./pipex");
+	dup2(fd[0], STDIN_FILENO);
+	dup2(file2_fd, STDOUT_FILENO);
+	close(file2_fd);
+	close(fd[0]);
+	close(fd[1]);
+	cmd2 = ft_split(argv[3], ' ');
+	if (!cmd2 || !cmd2[0])
+		ft_error("Error command");
+	ft_cmd(envp, cmd2);
+	free_array(cmd2);
+}
+
+void	ft_kill(char *msg, int *fd)
+{
+	if (msg != NULL)
+		perror(msg);
+	if (fd[0] >= 0)
+		close(fd[0]);
+	if (fd[1] >= 0)
+		close(fd[1]);
+	exit(EXIT_FAILURE);
 }
 
 int	main(int argc, char *argv[], char **envp)
 {
-	int		in_fd;
-	int		out_fd;
+	int		fd[2];
 
 	if (argc != 5)
 	{
 		ft_printf("Usage: %s infile cmd1 cmd2 outfile\n", argv[0]);
-		return (EXIT_FAILURE);
+		return (1);
 	}
-	open_files(argv[1], argv[4], &in_fd, &out_fd);
-	ft_execpipe(in_fd, out_fd, argv, envp);
-	ft_error(NULL, &in_fd, &out_fd);
-	return (EXIT_SUCCESS);
+	if (pipe(fd) == -1)
+		ft_error("Error Creating Pipe");
+	ft_execpipe(fd, argv, envp);
+	return (0);
 }
